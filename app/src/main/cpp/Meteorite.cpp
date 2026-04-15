@@ -16,10 +16,5 @@ void Meteorite::update(float dt)
 
 void Meteorite::render(Renderer &renderer)
 {
-    renderer.drawRect(X, Y, Width, Height, 0.0f, 0.0f, 1.0);
-}
-
-bool Meteorite::isActive() const
-{
-    return Active;
+    renderer.drawRect(X, Y, Width, Height, 0.7f, 0.3f, 0.3f);
 }

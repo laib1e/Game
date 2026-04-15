@@ -43,7 +43,7 @@ void Game::frame()
             bomber.render(renderer);
             bomber.setActive(false);
         }
-        reset();
+        return;
     }
     auto timeframe = std::chrono::steady_clock::now();
     deltaTime = static_cast<decltype(deltaTime)>((timeframe - timestamp).count()) / std::chrono::steady_clock::period::den;
@@ -83,7 +83,7 @@ void Game::frame()
     {
         std::uniform_real_distribution<float> dist_meteor(meteorWidth, screenWidth);
         meteor = std::unique_ptr<Meteorite>(new Meteorite(dist_meteor(rang_gen), screenHeight, meteorWidth, meteorHeight));
-        meteorSpawnTimer = 1000.0f;
+        meteorSpawnTimer = 20.0f;
     }
 
     for (Fighter& fighter : fighters)
@@ -92,7 +92,6 @@ void Game::frame()
         {
             bullets.emplace_back(fighter.getX(),
                                  fighter.getY() + (float)fighter.getHeight() / 2,
-                                 screenWidth,
                                  -300.0f, BulletOwner::Enemy);
             fighter.setWantsToShoot(false);
         }
@@ -103,7 +102,6 @@ void Game::frame()
     {
         bullets.emplace_back(player.getX() + (float)player.getWidth(),
                              player.getY() + (float)player.getHeight() / 2,
-                             screenWidth,
                              300.0f, BulletOwner::Player);
         shootTimer = 1.5f;
     }
@@ -266,27 +264,11 @@ void Game::reset()
     birdSpawnTimer = 2.0f;
     meteorSpawnTimer = 1000.0f;
 
+    bombers.clear();
+    fighters.clear();
+    bullets.clear();
+    birds.clear();
+    meteor.reset();
+
     state = GameState::Playing;
-
-    birds.erase(
-            std::remove_if(birds.begin(), birds.end(),
-                           [](const Bird& b) { return !b.isActive(); }),
-            birds.end());
-
-    bombers.erase(
-            std::remove_if(bombers.begin(), bombers.end(),
-                           [](const Bomber& b) { return !b.isActive(); }),
-            bombers.end());
-
-    bullets.erase(
-            std::remove_if(bullets.begin(), bullets.end(),
-                           [](const Bullet& b) {return !b.isActive(); }),
-            bullets.end()
-    );
-
-    fighters.erase(
-            std::remove_if(fighters.begin(), fighters.end(),
-                           [](const Fighter& b) {return !b.isActive(); }),
-            fighters.end()
-    );
 }

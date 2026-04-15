@@ -29,7 +29,7 @@ private:
     float deltaTime = 0;
     float shootTimer = 0;
 
-    float gameTime = 0, bomberSpawnTimer = 1.5f, fightersSpawnTimer = 3.0f, birdSpawnTimer = 2.0f, meteorSpawnTimer = 1000.0f;
+    float gameTime = 0, bomberSpawnTimer = 1.5f, fightersSpawnTimer = 3.0f, birdSpawnTimer = 2.0f, meteorSpawnTimer = 20.0f;
     int maxBombers = 0, maxFighters = 0, maxBirds = 0;
 
     int playerWidth = 60, bomberWidth = 80, fighterWidth = playerWidth, meteorWidth = 150, birdWidth = 20;

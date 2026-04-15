@@ -22,6 +22,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_game_GameActivity_onNativeDrawFrame(JNIEnv *env, jobject thiz)
 {
+    if (not game) return;
     game->frame();
 }
 

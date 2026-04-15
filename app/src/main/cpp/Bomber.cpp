@@ -18,8 +18,3 @@ void Bomber::render(Renderer &renderer)
 {
     renderer.drawRect(X, Y, Width, Height, 0.0f, 0.0f, 1.0);
 }
-
-bool Bomber::isActive() const
-{
-    return Active;
-}

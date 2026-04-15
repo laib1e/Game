@@ -11,5 +11,4 @@ public:
     explicit Meteorite(float x, float y, int width, int height);
     void update(float dt) override;
     void render(Renderer &renderer) override;
-    bool isActive() const;
 };

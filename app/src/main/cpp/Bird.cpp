@@ -26,8 +26,3 @@ void Bird::render(Renderer &renderer)
 {
     renderer.drawRect(X, Y, Width, Height, 1.0f, 1.0f, 1.0);
 }
-
-bool Bird::isActive() const
-{
-    return Active;
-}

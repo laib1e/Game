@@ -10,9 +10,8 @@ private:
     BulletOwner owner_;
 
 public:
-    explicit Bullet(float x, float y, int width, float speed, BulletOwner owner);
+    explicit Bullet(float x, float y, float speed, BulletOwner owner);
     void update(float dt) override;
     void render(Renderer &renderer) override;
-    bool isActive() const;
     BulletOwner getOwner() const;
 };

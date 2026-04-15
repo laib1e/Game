@@ -15,11 +15,4 @@ public:
     void setTargetDirection(float direction);
     void update(float dt) override;
     void render(Renderer &renderer) override;
-    float getX() const;
-    float getY() const;
-    void setX(float x);
-    void setY(float y);
-    int getWidth() const;
-    int getHeight() const;
-    bool isActive() const;
 };

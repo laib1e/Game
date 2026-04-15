@@ -81,7 +81,7 @@ Renderer::Renderer(int width, int height)
 
     createOrthoMatrix(orthographicMatrix, 0, (float)width, 0, (float)height);
     glViewport(0, 0, width, height);
-    glClearColor(0.2, 0.3, 0.3, 0.1);
+    glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
 }
 
 void Renderer::drawRect(float x, float y, int w, int h, float r, float g, float b) const

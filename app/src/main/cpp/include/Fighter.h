@@ -13,11 +13,6 @@ public:
     explicit Fighter(float x, float y, int width, int height);
     void update(float dt) override;
     void render(Renderer &renderer) override;
-    bool isActive() const;
-    float getX() const;
-    float getY() const;
-    int getWidth() const;
-    int getHeight() const;
     bool getWantsToShoot() const;
     void setWantsToShoot(bool set);
 };

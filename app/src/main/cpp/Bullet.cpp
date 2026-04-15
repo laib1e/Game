@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-Bullet::Bullet(float x, float y, int width, float speed, BulletOwner owner)
+Bullet::Bullet(float x, float y, float speed, BulletOwner owner)
 {
     X = x; Y = y;
     Width = 4; Height = 4;
@@ -19,11 +19,6 @@ void Bullet::update(float dt)
 void Bullet::render(Renderer &renderer)
 {
     renderer.drawRect(X, Y, Width, Height, 1.0f, 0.0f, 1.0);
-}
-
-bool Bullet::isActive() const
-{
-    return Active;
 }
 
 BulletOwner Bullet::getOwner() const

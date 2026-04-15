@@ -31,39 +31,4 @@ void Player::render(Renderer &renderer)
     renderer.drawRect(X, Y, Width, Height, 0.0f, 1.0f, 0.0);
 }
 
-float Player::getX() const
-{
-    return X;
-}
-
-float Player::getY() const
-{
-    return Y;
-}
-
-int Player::getWidth() const
-{
-    return Width;
-}
-
-int Player::getHeight() const
-{
-    return Height;
-}
-
-bool Player::isActive() const
-{
-    return Active;
-}
-
-void Player::setX(float x)
-{
-    X = x;
-}
-
-void Player::setY(float y)
-{
-    Y = y;
-}
-
 
