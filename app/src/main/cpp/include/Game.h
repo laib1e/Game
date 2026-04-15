@@ -36,9 +36,19 @@ private:
     int playerHeight = 40, bomberHeight = 60, fighterHeight = playerHeight, meteorHeight = 150, birdHeight  = 20;
     int score = 0;
 
+    float resetBtnX = 0, resetBtnY = 0, resetBtnW = 0, resetBtnH = 0;
+    float exitBtnX = 0, exitBtnY = 0, exitBtnW = 0, exitBtnH = 0;
+    bool shouldExit = false;
+
+    void drawGameOver();
+    void drawScore();
+
 public:
     explicit Game(int width, int height);
     void frame();
-    void onTouch(int action, float y);
+    void onTouch(int action, float y, float x);
     void reset();
+
+    bool getShouldExit() const;
+    Renderer *getRenderer();
 };

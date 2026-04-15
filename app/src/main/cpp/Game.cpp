@@ -1,7 +1,5 @@
 #include "Game.h"
 #include <algorithm>
-#include <android/log.h>
-#define LOG(...) __android_log_print(ANDROID_LOG_DEBUG, "Game", __VA_ARGS__)
 
 Game::Game(int width, int height) :
           renderer(width, height),
@@ -13,36 +11,75 @@ Game::Game(int width, int height) :
           state(GameState::Playing)
 {}
 
+void Game::drawScore()
+{
+    char scoreText[32];
+    snprintf(scoreText, sizeof(scoreText), "SCORE:%d", score);
+    float textSize = 40.0f;
+    float textX = 20.0f;
+    float textY = (float)screenHeight - textSize - 10.0f;
+    renderer.drawText(scoreText, textX, textY, textSize, 1.0f, 1.0f, 1.0f);
+}
+
+void Game::drawGameOver()
+{
+    // Darken overlay
+    renderer.drawRect(0, 0, screenWidth, screenHeight, 0.0f, 0.0f, 0.0f);
+
+    float centerX = (float)screenWidth / 2.0f;
+    float centerY = (float)screenHeight / 2.0f;
+
+    // "GAME OVER" text
+    float titleSize = 60.0f;
+    float titleWidth = 9 * titleSize * 1.0f; // 9 chars
+    renderer.drawText("GAME OVER", centerX - titleWidth / 2.0f,
+                      centerY + 80.0f, titleSize, 1.0f, 0.3f, 0.3f);
+
+    // Score
+    char scoreText[32];
+    snprintf(scoreText, sizeof(scoreText), "SCORE:%d", score);
+    float scoreSize = 40.0f;
+    int scoreLen = 0;
+    while (scoreText[scoreLen] != '\0') scoreLen++;
+    float scoreWidth = (float)scoreLen * scoreSize * 1.0f;
+    renderer.drawText(scoreText, centerX - scoreWidth / 2.0f,
+                      centerY + 20.0f, scoreSize, 1.0f, 1.0f, 1.0f);
+
+    // RESET button
+    resetBtnW = 200.0f;
+    resetBtnH = 60.0f;
+    resetBtnX = centerX - resetBtnW - 20.0f;
+    resetBtnY = centerY - 80.0f;
+    renderer.drawRect(resetBtnX, resetBtnY, (int)resetBtnW, (int)resetBtnH,
+                      0.2f, 0.6f, 0.2f);
+    float resetTextSize = 36.0f;
+    float resetTextW = 5 * resetTextSize * 1.0f; // "RESET" = 5 chars
+    renderer.drawText("RESET",
+                      resetBtnX + (resetBtnW - resetTextW) / 2.0f,
+                      resetBtnY + (resetBtnH - resetTextSize) / 2.0f,
+                      resetTextSize, 1.0f, 1.0f, 1.0f);
+
+    // EXIT button
+    exitBtnW = 200.0f;
+    exitBtnH = 60.0f;
+    exitBtnX = centerX + 20.0f;
+    exitBtnY = centerY - 80.0f;
+    renderer.drawRect(exitBtnX, exitBtnY, (int)exitBtnW, (int)exitBtnH,
+                      0.6f, 0.2f, 0.2f);
+    float exitTextSize = 36.0f;
+    float exitTextW = 4 * exitTextSize * 1.0f; // "EXIT" = 4 chars
+    renderer.drawText("EXIT",
+                      exitBtnX + (exitBtnW - exitTextW) / 2.0f,
+                      exitBtnY + (exitBtnH - exitTextSize) / 2.0f,
+                      exitTextSize, 1.0f, 1.0f, 1.0f);
+}
+
 void Game::frame()
 {
     if (state == GameState::GameOver)
     {
-        // Game Over
         renderer.drawFrame();
-        player.render(renderer);
-        for(Bird& bird : birds)
-        {
-            bird.render(renderer);
-            bird.setActive(false);
-        }
-
-        for (Fighter& fighter : fighters)
-        {
-            fighter.render(renderer);
-            fighter.setActive(false);
-        }
-
-        for (Bullet& bullet : bullets)
-        {
-            bullet.render(renderer);
-            bullet.setActive(false);
-        }
-
-        for (Bomber& bomber : bombers)
-        {
-            bomber.render(renderer);
-            bomber.setActive(false);
-        }
+        drawGameOver();
         return;
     }
     auto timeframe = std::chrono::steady_clock::now();
@@ -241,10 +278,30 @@ void Game::frame()
     {
         state = GameState::GameOver;
     }
+
+    drawScore();
 }
 
-void Game::onTouch(int action, float y)
+void Game::onTouch(int action, float y, float x)
 {
+    if (state == GameState::GameOver)
+    {
+        float gameY = (float)screenHeight - y;
+        float gameX = x;
+
+        if (gameX >= resetBtnX && gameX <= resetBtnX + resetBtnW &&
+            gameY >= resetBtnY && gameY <= resetBtnY + resetBtnH)
+        {
+            reset();
+        }
+
+        if (gameX >= exitBtnX && gameX <= exitBtnX + exitBtnW &&
+            gameY >= exitBtnY && gameY <= exitBtnY + exitBtnH)
+        {
+            shouldExit = true;
+        }
+        return;
+    }
     player.setTargetDirection((float)screenHeight - y);
 }
 
@@ -270,5 +327,16 @@ void Game::reset()
     birds.clear();
     meteor.reset();
 
+    timestamp = std::chrono::steady_clock::now();
     state = GameState::Playing;
+}
+
+Renderer* Game::getRenderer()
+{
+    return &renderer;
+}
+
+bool Game::getShouldExit() const
+{
+    return shouldExit;
 }

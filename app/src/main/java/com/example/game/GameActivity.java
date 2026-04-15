@@ -48,7 +48,7 @@ public class GameActivity extends AppCompatActivity
         @Override
         public boolean onTouchEvent(MotionEvent event)
         {
-            onNativeOnTouch(event.getAction(), event.getY());
+            onNativeOnTouch(event.getAction(), event.getY(), event.getX());
             return true;
         }
     }
@@ -59,6 +59,13 @@ public class GameActivity extends AppCompatActivity
         public void onDrawFrame(GL10 gl)
         {
             onNativeDrawFrame();
+            if (onNativeShouldExit())
+            {
+                runOnUiThread(() -> {
+                    finishAndRemoveTask();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                });
+            }
         }
 
         @Override
@@ -77,5 +84,6 @@ public class GameActivity extends AppCompatActivity
     native void onNativeSurfaceCreate();
     native void onNativeResize(int width, int height);
     native void onNativeDrawFrame();
-    native void onNativeOnTouch(int action, float y);
+    native void onNativeOnTouch(int action, float y, float x);
+    native boolean onNativeShouldExit();
 }

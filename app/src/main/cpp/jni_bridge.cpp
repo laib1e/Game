@@ -28,7 +28,15 @@ Java_com_example_game_GameActivity_onNativeDrawFrame(JNIEnv *env, jobject thiz)
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_game_GameActivity_onNativeOnTouch(JNIEnv *env, jobject thiz, jint action, jfloat y)
+Java_com_example_game_GameActivity_onNativeOnTouch(JNIEnv *env, jobject thiz, jint action, jfloat y, jfloat x)
 {
-    game->onTouch(action, y);
+    game->onTouch(action, y, x);
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL Java_com_example_game_GameActivity_onNativeShouldExit(JNIEnv *env, jobject thiz)
+{
+    if (game)
+        return game->getShouldExit();
+    return false;
 }
