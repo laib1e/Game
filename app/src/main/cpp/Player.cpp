@@ -17,7 +17,6 @@ void Player::update(float dt)
     float desired = targetY - Y;
     VY += (desired - VY) * smoothing * dt;
 
-    float maxSpeed = 30.0f;
     if (VY > maxSpeed) VY = maxSpeed;
     if (VY < -maxSpeed) VY = -maxSpeed;
 
@@ -29,4 +28,24 @@ void Player::update(float dt)
 void Player::render(Renderer &renderer)
 {
     renderer.drawRect(X, Y, Width, Height, 0.0f, 1.0f, 0.0);
+}
+
+float Player::getX() const
+{
+    return X;
+}
+
+float Player::getY() const
+{
+    return Y;
+}
+
+int Player::getWidth() const
+{
+    return Width;
+}
+
+int Player::getHeight() const
+{
+    return Height;
 }

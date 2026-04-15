@@ -6,6 +6,7 @@ class Player : public GameObject
 {
 private:
     int screenWidth_ = 0, screenHeight_ = 0;
+    float maxSpeed = 30.0f;
     float smoothing = 1.5;
     float targetY = 0;
 
@@ -14,4 +15,8 @@ public:
     void setTargetDirection(float direction);
     void update(float dt) override;
     void render(Renderer &renderer) override;
+    float getX() const;
+    float getY() const;
+    int getWidth() const;
+    int getHeight() const;
 };
