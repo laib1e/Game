@@ -5,6 +5,7 @@ Player::Player(float x, float y, int screenWidth, int screenHeight, int width, i
     X = x; Y = y;
     Width = width; Height = height;
     screenWidth_ = screenWidth; screenHeight_ = screenHeight;
+    Active = true;
 }
 
 void Player::setTargetDirection(float direction)
@@ -21,7 +22,7 @@ void Player::update(float dt)
     if (VY < -maxSpeed) VY = -maxSpeed;
 
     Y += VY * dt;
-    if (Y < 0) Y = 0;
+    if (Y <= 0) setActive(false);
     if (Y + (float)Height > (float)screenHeight_) Y = (float)screenHeight_ - (float)Height;
 }
 
@@ -49,3 +50,20 @@ int Player::getHeight() const
 {
     return Height;
 }
+
+bool Player::isActive() const
+{
+    return Active;
+}
+
+void Player::setX(float x)
+{
+    X = x;
+}
+
+void Player::setY(float y)
+{
+    Y = y;
+}
+
+

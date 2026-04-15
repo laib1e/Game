@@ -1,14 +1,15 @@
-//
-// Created by Viktor on 15.04.2026.
-//
+#pragma once
+#include "GameObject.h"
+#include "Renderer.h"
 
-#ifndef GAME_METEORITE_H
-#define GAME_METEORITE_H
+class Meteorite : public GameObject
+{
+private:
+    float maxSpeed = 300.0f;
 
-
-class Meteorite {
-
+public:
+    explicit Meteorite(float x, float y, int width, int height);
+    void update(float dt) override;
+    void render(Renderer &renderer) override;
+    bool isActive() const;
 };
-
-
-#endif //GAME_METEORITE_H
